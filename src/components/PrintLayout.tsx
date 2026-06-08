@@ -30,19 +30,35 @@ export default function PrintLayout({ params, title }: PrintLayoutProps) {
       <div className="no-print">
         <button
           onClick={handlePrint}
-          className="w-full rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-gray-800 active:bg-gray-950"
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[var(--foreground)] px-6 py-3 font-sans text-sm font-semibold text-white shadow-sm transition hover:opacity-90 active:opacity-80"
         >
-          🖨️ Print QR Code
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+            />
+          </svg>
+          Print QR Code
         </button>
       </div>
 
-      {/* Print-only layout */}
+      {/* Print-only layout — pure black-on-white for newsprint */}
       <div
         ref={printRef}
-        className="print-only mx-auto mt-8 hidden max-w-md rounded-xl border-2 border-gray-200 bg-white p-8 text-center shadow-lg print:block"
+        className="print-only mx-auto mt-8 hidden max-w-md rounded-xl border-2 border-gray-300 bg-white p-8 text-center shadow-lg print:block print:shadow-none"
       >
         {title && (
-          <h2 className="mb-1 text-xl font-bold text-gray-900">{title}</h2>
+          <h2 className="font-sans text-xl font-bold text-black">
+            {title}
+          </h2>
         )}
 
         <div className="my-6 flex justify-center">
@@ -52,8 +68,8 @@ export default function PrintLayout({ params, title }: PrintLayoutProps) {
           />
         </div>
 
-        <div className="space-y-1 text-sm text-gray-700">
-          <p className="text-base font-semibold text-gray-900">
+        <div className="space-y-1 font-body text-sm text-black">
+          <p className="text-base font-semibold">
             Scan with your Stellar wallet
           </p>
           <p>
@@ -63,14 +79,14 @@ export default function PrintLayout({ params, title }: PrintLayoutProps) {
               {assetLabel(params.assetCode)}
             </span>
           </p>
-          <p className="font-mono text-xs text-gray-500 break-all">
+          <p className="break-all font-mono text-xs text-gray-600">
             {params.destination}
           </p>
           {params.memo && (
-            <p className="text-xs text-gray-500">Memo: {params.memo}</p>
+            <p className="text-xs text-gray-600">Memo: {params.memo}</p>
           )}
           {params.msg && (
-            <p className="text-xs italic text-gray-500">"{params.msg}"</p>
+            <p className="text-xs italic text-gray-600">&ldquo;{params.msg}&rdquo;</p>
           )}
         </div>
       </div>

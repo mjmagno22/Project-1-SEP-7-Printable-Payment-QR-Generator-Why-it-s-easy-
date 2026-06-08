@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { Sep7PayParams, ValidationResult } from '@/lib/sep7';
+import type { Sep7PayParams } from '@/lib/sep7';
 import { validatePayParams } from '@/lib/sep7';
 
 interface QrFormProps {
@@ -32,7 +32,7 @@ export default function QrForm({ onGenerate }: QrFormProps) {
       msg: msg.trim() || undefined,
     };
 
-    const result: ValidationResult = validatePayParams(params);
+    const result = validatePayParams(params);
     if (!result.valid) {
       setError(result.error ?? 'Invalid input.');
       return;
@@ -42,14 +42,14 @@ export default function QrForm({ onGenerate }: QrFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Destination */}
+    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+      {/* ── Destination ─────────────────────────────── */}
       <div>
         <label
           htmlFor="destination"
-          className="mb-1 block text-sm font-medium text-gray-700"
+          className="mb-1.5 block font-body text-sm font-medium text-[var(--foreground)]"
         >
-          Destination Address <span className="text-red-500">*</span>
+          Destination Address <span className="text-[var(--color-accent)]">*</span>
         </label>
         <input
           id="destination"
@@ -58,19 +58,19 @@ export default function QrForm({ onGenerate }: QrFormProps) {
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
           placeholder="G..."
-          className="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+          className="block w-full rounded-lg border border-[var(--color-border)] bg-white px-4 py-3 font-body text-sm text-[var(--foreground)] placeholder:text-[var(--color-muted-fg)] transition hover:border-[var(--color-primary)]"
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1.5 font-body text-xs text-[var(--color-muted-fg)]">
           The Stellar account that will receive the payment.
         </p>
       </div>
 
-      {/* Amount & Asset */}
+      {/* ── Amount + Asset ──────────────────────────── */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label
             htmlFor="amount"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1.5 block font-body text-sm font-medium text-[var(--foreground)]"
           >
             Amount
           </label>
@@ -81,16 +81,16 @@ export default function QrForm({ onGenerate }: QrFormProps) {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="e.g. 10.50"
-            className="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+            className="block w-full rounded-lg border border-[var(--color-border)] bg-white px-4 py-3 font-body text-sm text-[var(--foreground)] placeholder:text-[var(--color-muted-fg)] transition hover:border-[var(--color-primary)]"
           />
-          <p className="mt-1 text-xs text-gray-500">
-            Leave blank to let the payer enter the amount.
+          <p className="mt-1.5 font-body text-xs text-[var(--color-muted-fg)]">
+            Leave blank to let the payer decide.
           </p>
         </div>
         <div>
           <label
             htmlFor="asset"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1.5 block font-body text-sm font-medium text-[var(--foreground)]"
           >
             Asset
           </label>
@@ -98,12 +98,12 @@ export default function QrForm({ onGenerate }: QrFormProps) {
             id="asset"
             value={asset}
             onChange={(e) => setAsset(e.target.value as 'XLM' | 'USDC')}
-            className="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+            className="block w-full rounded-lg border border-[var(--color-border)] bg-white px-4 py-3 font-body text-sm text-[var(--foreground)] transition hover:border-[var(--color-primary)]"
           >
             <option value="XLM">XLM (native)</option>
             <option value="USDC">USDC</option>
           </select>
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1.5 font-body text-xs text-[var(--color-muted-fg)]">
             {asset === 'USDC'
               ? `Issuer: ${USDC_ISSUER.slice(0, 8)}...`
               : 'Native Stellar asset.'}
@@ -111,13 +111,14 @@ export default function QrForm({ onGenerate }: QrFormProps) {
         </div>
       </div>
 
-      {/* Memo */}
+      {/* ── Memo ───────────────────────────────────── */}
       <div>
         <label
           htmlFor="memo"
-          className="mb-1 block text-sm font-medium text-gray-700"
+          className="mb-1.5 block font-body text-sm font-medium text-[var(--foreground)]"
         >
-          Memo <span className="text-xs text-gray-400">(optional)</span>
+          Memo{' '}
+          <span className="text-[var(--color-muted-fg)]">(optional)</span>
         </label>
         <input
           id="memo"
@@ -125,20 +126,21 @@ export default function QrForm({ onGenerate }: QrFormProps) {
           value={memo}
           onChange={(e) => setMemo(e.target.value)}
           placeholder="e.g. Donation, Invoice #123"
-          className="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+          className="block w-full rounded-lg border border-[var(--color-border)] bg-white px-4 py-3 font-body text-sm text-[var(--foreground)] placeholder:text-[var(--color-muted-fg)] transition hover:border-[var(--color-primary)]"
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1.5 font-body text-xs text-[var(--color-muted-fg)]">
           Attached to the transaction (MEMO_TEXT).
         </p>
       </div>
 
-      {/* Message */}
+      {/* ── Message ─────────────────────────────────── */}
       <div>
         <label
           htmlFor="msg"
-          className="mb-1 block text-sm font-medium text-gray-700"
+          className="mb-1.5 block font-body text-sm font-medium text-[var(--foreground)]"
         >
-          Message <span className="text-xs text-gray-400">(optional)</span>
+          Message{' '}
+          <span className="text-[var(--color-muted-fg)]">(optional)</span>
         </label>
         <input
           id="msg"
@@ -147,22 +149,27 @@ export default function QrForm({ onGenerate }: QrFormProps) {
           onChange={(e) => setMsg(e.target.value)}
           placeholder="e.g. Thank you for your support!"
           maxLength={300}
-          className="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+          className="block w-full rounded-lg border border-[var(--color-border)] bg-white px-4 py-3 font-body text-sm text-[var(--foreground)] placeholder:text-[var(--color-muted-fg)] transition hover:border-[var(--color-primary)]"
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1.5 font-body text-xs text-[var(--color-muted-fg)]">
           Shown in the wallet (max 300 chars, not stored on-chain).
         </p>
       </div>
 
+      {/* ── Error ───────────────────────────────────── */}
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div
+          role="alert"
+          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 font-body text-sm text-red-700"
+        >
           {error}
         </div>
       )}
 
+      {/* ── Submit ──────────────────────────────────── */}
       <button
         type="submit"
-        className="w-full rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 active:bg-indigo-700"
+        className="w-full cursor-pointer rounded-lg bg-[var(--color-accent)] px-6 py-3 font-sans text-sm font-semibold text-white shadow-sm transition hover:opacity-90 active:opacity-80"
       >
         Generate QR Code
       </button>
