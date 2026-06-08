@@ -47,7 +47,7 @@ export function validatePayParams(params: Sep7PayParams): ValidationResult {
     return {
       valid: false,
       error:
-        'Invalid Stellar address. Must start with G and be 56 characters.',
+        'Invalid address. A Stellar address starts with G and is 56 characters long (e.g. G...). You can also paste a full SEP-7 URI.',
     };
   }
 
